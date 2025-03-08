@@ -1,24 +1,30 @@
+import os
 import instaloader
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
+
+# Retrieve credentials from environment variables
+USERNAME = os.getenv("INSTAGRAM_USERNAME")
+PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
 
 # Create an instance of Instaloader
 L = instaloader.Instaloader()
 
-# Optionally, log in if the post isn’t public
-# L.login("your_username", "your_password")
+# Log in using your credentials
+L.login(USERNAME, PASSWORD)
 
-# Extract the shortcode from the URL:
-# For "https://www.instagram.com/reel/DDz1G3qvEuz/?igsh=MWNkdzV1dXE0NW1saQ==", the shortcode is "DDz1G3qvEuz"
+# Use the shortcode from the Instagram reel URL (e.g., "DDz1G3qvEuz")
 shortcode = "DDz1G3qvEuz"
-
-# Load the post using the shortcode
 post = instaloader.Post.from_shortcode(L.context, shortcode)
 
-# Print basic post info
+# Print basic post information
 print("Caption:", post.caption)
 print("Likes:", post.likes)
 print("Number of Comments:", post.comments)
 
-# Retrieve all comments
+# Retrieve all comments (ensure you're logged in for posts with many comments)
 all_comments = list(post.get_comments())
 print("\nAll Comments:")
 for comment in all_comments:
